@@ -9,4 +9,6 @@ Use:
 ```
 python main.py
 python tempo.py
+python combine.py
 ```
+
