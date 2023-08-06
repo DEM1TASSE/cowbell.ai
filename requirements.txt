@@ -56,6 +56,6 @@ typing_extensions==4.7.1
 tzdata==2023.3
 urllib3==2.0.4
 vmo==0.30.5
-google-api-python-client=2.95.0
-streamlit=1.25.0
-python-dotenv=1.0.0
+google-api-python-client==2.95.0
+streamlit==1.25.0
+python-dotenv==1.0.0
