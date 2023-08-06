@@ -32,7 +32,7 @@ def play_audio(audio):
 # Load the audio files
 main_audio_path = 'Headlines_Internet_Version.mp3'
 short_audio_path = 'cowbell.mp3'
-tempo = 120  # Play the short audio at 120 BPM
+tempo = 152  # Play the short audio at 120 BPM
 
 # Combine the audio files
 combined_audio = combine_audio_with_tempo(main_audio_path, short_audio_path, tempo)
