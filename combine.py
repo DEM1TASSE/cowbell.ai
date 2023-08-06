@@ -1,26 +1,25 @@
 from pydub import AudioSegment
 import simpleaudio as sa
 import numpy as np
-
-from pytube import YouTube
-from pydub import AudioSegment
-
 import msaf
 
-url = "https://www.youtube.com/watch?v=-MsvER1dpjM"
-yt = YouTube(url)
+# from pytube import YouTube
+# from pydub import AudioSegment
 
-audio = yt.streams.get_audio_only()
-audio.download()
+# url = "https://www.youtube.com/watch?v=cimoNqiulUE"
+# yt = YouTube(url)
 
-# Specify the name of the downloaded .webm file and the output .mp3 file
-webm_file = audio.default_filename
-mp3_file = webm_file.replace(".mp4", ".mp3").replace(" ", "_")
+# audio = yt.streams.get_audio_only()
+# audio.download()
 
-# Convert .webm to .mp3
-AudioSegment.from_file(webm_file).export(mp3_file, format="mp3")
+# # Specify the name of the downloaded .webm file and the output .mp3 file
+# webm_file = audio.default_filename
+# mp3_file = webm_file.replace(".mp4", ".mp3").replace(" ", "_")
 
-print("Download and conversion completed!!")
+# # Convert .webm to .mp3
+# AudioSegment.from_file(webm_file).export(mp3_file, format="mp3")
+
+# print("Download and conversion completed!!")
 
 def combine_audio_during_interval(main_audio_path, cowbell_audio_path, tempo, start_time, end_time):
     # Load both audio files
@@ -42,8 +41,8 @@ def combine_audio_during_interval(main_audio_path, cowbell_audio_path, tempo, st
     for i in np.arange(0, main_audio_length, interval):
         if start_time_ms <= i <= end_time_ms:  # Check if the current position is within the specified time range
             combined_audio = combined_audio.overlay(cowbell_audio, position=int(i))
-
-    return combined_audio
+    combined_audio.export(main_audio_path[:-4] + '_combined.mp3', format="mp3")
+    return main_audio_path[:-4] + '_combined.mp3'
 
 def play_audio(audio):
     # Convert stereo to mono
@@ -93,29 +92,46 @@ def get_segments(audio_file):
 # get the first segment that is longer than 10 seconds
 def get_first_segment(audio_file):
     boundaries, labels = get_segments(audio_file)
+    cnt = 0
     for i in range(2, len(boundaries)):
         if boundaries[i] - boundaries[i-1] > 10:
+            cnt += 1
+            
+        if cnt > 1:
             return boundaries[i-1], boundaries[i], i
 
 
-# Load the audio files
-main_audio_path = mp3_file
-short_audio_path = 'cowbell.mp3'
-tempo = detect_tempo(mp3_file)  # Play the short audio at 120 BPM
+# # Load the audio files
+# main_audio_path = mp3_file
+# short_audio_path = 'cowbell.mp3'
+# tempo = detect_tempo(mp3_file)  # Play the short audio at 120 BPM
 
-best_seg_start, best_seg_end, i = get_first_segment(mp3_file)
+# best_seg_start, best_seg_end, i = get_first_segment(mp3_file)
 
-print(best_seg_start, best_seg_end, i)
+# print(best_seg_start, best_seg_end, i)
 
-# Set the interval during which the cowbell should play (in seconds)
-start_time = best_seg_start  # Start after 1 minute
-end_time = best_seg_end   # End after 2 minutes
+# # Set the interval during which the cowbell should play (in seconds)
+# start_time = best_seg_start  # Start after 1 minute
+# end_time = best_seg_end   # End after 2 minutes
 
-# Combine the audio files
-combined_audio = combine_audio_during_interval(main_audio_path, short_audio_path, tempo, start_time, end_time)
+# # Combine the audio files
+# combined_audio = combine_audio_during_interval(main_audio_path, short_audio_path, tempo, start_time, end_time)
 
-# Play the combined audio
+# # Play the combined audio
+# # play_audio(combined_audio)
+# # Save the combined audio to an MP3 file
+# combined_audio.export(mp3_file[:-4] + '_combined.mp3', format="mp3")
 # play_audio(combined_audio)
-# Save the combined audio to an MP3 file
-combined_audio.export(mp3_file[:-4] + '_combined.mp3', format="mp3")
-play_audio(combined_audio)
+# # Load the audio files
+# main_audio_path = mp3_file
+# short_audio_path = 'cowbell.mp3'
+# tempo = detect_tempo(mp3_file)  # Play the short audio at 120 BPM
+
+# # Combine the audio files
+# combined_audio = combine_audio_with_tempo(main_audio_path, short_audio_path, tempo)
+
+# # Play the combined audio
+# # play_audio(combined_audio)
+# # Save the combined audio to an MP3 file
+# combined_audio.export(mp3_file[:-4] + '_combined.mp3', format="mp3")
+# play_audio(combined_audio)
